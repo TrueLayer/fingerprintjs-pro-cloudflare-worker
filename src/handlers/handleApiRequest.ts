@@ -15,12 +15,14 @@ export async function handleApiRequest(receivedRequest: Request, env: WorkerEnv,
     if (!methodAuthorized) {
       const headers = new Headers(receivedRequest.headers)
       headers.delete('Cookie')
+      headers.delete('Referer')
 
       fingerprintRequest = new Request(targetURL, new Request(receivedRequest, { headers }))
     } else {
       addTrafficMonitoringSearchParamsForIngressRequest(targetURL)
 
       const headers = filterCookies(new Headers(receivedRequest.headers), (key) => key === '_iidt')
+      headers.delete('Referer')
       addProxyIntegrationHeaders(headers, receivedRequest.url, env)
 
       fingerprintRequest = new Request(
