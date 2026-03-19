@@ -41,7 +41,10 @@ async function makeIngressRequest(
   addProxyIntegrationHeaders(headers, receivedRequest.url, env)
   const body = await (receivedRequest.headers.get('Content-Type') ? receivedRequest.blob() : Promise.resolve(null))
   console.log(`sending ingress request to ${requestURL}...`)
-  const request = new Request(requestURL, new Request(receivedRequest, { headers, body }))
+  const request = new Request<unknown, CfProperties<unknown>>(
+    requestURL,
+    new Request(receivedRequest, { headers, body })
+  )
 
   return fetch(request).then((oldResponse) => new Response(oldResponse.body, oldResponse))
 }
@@ -59,7 +62,7 @@ function makeCacheEndpointRequest(
   headers.delete('Referer')
 
   console.log(`sending cache request to ${requestURL}...`)
-  const request = new Request(requestURL, new Request(receivedRequest, { headers }))
+  const request = new Request<unknown, CfProperties<unknown>>(requestURL, new Request(receivedRequest, { headers }))
 
   return fetch(request).then((oldResponse) => new Response(oldResponse.body, oldResponse))
 }

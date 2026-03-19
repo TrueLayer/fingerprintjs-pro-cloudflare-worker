@@ -25,7 +25,7 @@ function makeDownloadScriptRequest(request: Request, env: WorkerEnv): Promise<Re
   headers.delete('Referer')
 
   console.log(`Downloading script from cdnEndpoint ${newURL.toString()}...`)
-  const newRequest = new Request(newURL.toString(), new Request(request, { headers }))
+  const newRequest = new Request<unknown, CfProperties<unknown>>(newURL.toString(), new Request(request, { headers }))
   const workerCacheTtl = 60
   const maxMaxAge = 60 * 60
   const maxSMaxAge = 60
