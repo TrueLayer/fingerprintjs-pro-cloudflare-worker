@@ -25,7 +25,7 @@ const commonInput = {
   input: inputFile,
   plugins: [
     replace({
-      __current_worker_version__: packageJson.version,
+      __current_worker_version__: JSON.stringify(packageJson.version),
       preventAssignment: true,
     }),
     jsonPlugin(),
